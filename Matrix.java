@@ -18,6 +18,12 @@ public class Matrix{
 
     public Matrix(){};
 
+    public Matrix(int row, int col){
+        this.row = row;
+        this.col = col;
+        this.elements = new double[row][col];
+    }
+
     public Matrix(int row, int col, double[][] elements){
         this.row = row;
         this.col = col;
