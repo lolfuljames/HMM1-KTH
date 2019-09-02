@@ -4,7 +4,6 @@ import java.lang.*;
 
 
 public class Matrix{
-    private static Scanner scan = new Scanner(System.in);
     private double[][] elements;
     private int row;
     private int col;
@@ -71,37 +70,6 @@ public class Matrix{
         }
 
         return new Matrix(result_row,result_col,result_elements);
-    }
-
-    public static Matrix create_matrix(){
-        int row;
-        int col;
-
-
-        // System.out.println("inside");
-        while(!scan.hasNextInt());
-        // System.out.println("outside");
-        // String input = scan.nextLine();
-        // System.out.println(input);
-
-        row = scan.nextInt();
-
-
-        while(!scan.hasNextInt());
-        col = scan.nextInt();
-
-        // System.out.println("It's passed the integers!");
-        double[][] elements = new double[row][col];
-
-        for(int j=0; j<row; j++){
-            for(int k=0; k<col; k++){
-                while(!scan.hasNextDouble());
-                elements[j][k] = scan.nextDouble();
-            }
-        }
-        // scan.next();
-        Matrix new_matrix = new Matrix(row,col,elements);
-        return new_matrix;
     }
     
 }
