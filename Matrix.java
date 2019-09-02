@@ -90,7 +90,6 @@ public class Matrix{
         }
         // scan.next();
         Matrix new_matrix = new Matrix(row,col,elements);
-        scan.close();
         return new_matrix;
     }
     
