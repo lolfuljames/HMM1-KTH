@@ -1,9 +1,11 @@
+import java.util.*;
+import java.io.*;
 public class Main{
     public static void main(String[] args){
+       
         Matrix transition_matrix = Matrix.create_matrix();
         // System.out.println("transition done");
         // System.out.println(transition_matrix);
-
         Matrix emission_matrix = Matrix.create_matrix();
         // System.out.println(emission_matrix);
         // System.out.println("emission done");

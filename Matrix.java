@@ -4,7 +4,7 @@ import java.lang.*;
 
 
 public class Matrix{
-    
+    private static Scanner scan = new Scanner(System.in);
     private double[][] elements;
     private int row;
     private int col;
@@ -76,7 +76,6 @@ public class Matrix{
     public static Matrix create_matrix(){
         int row;
         int col;
-        Scanner scan = new Scanner(System.in);
 
 
         // System.out.println("inside");
@@ -91,7 +90,7 @@ public class Matrix{
         while(!scan.hasNextInt());
         col = scan.nextInt();
 
-        System.out.println("It's passed the integers!");
+        // System.out.println("It's passed the integers!");
         double[][] elements = new double[row][col];
 
         for(int j=0; j<row; j++){
