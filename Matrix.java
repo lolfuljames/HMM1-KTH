@@ -78,13 +78,25 @@ public class Matrix{
         int col;
         Scanner scan = new Scanner(System.in);
 
+
+        // System.out.println("inside");
+        while(!scan.hasNextInt());
+        // System.out.println("outside");
+        // String input = scan.nextLine();
+        // System.out.println(input);
+
         row = scan.nextInt();
+
+
+        while(!scan.hasNextInt());
         col = scan.nextInt();
 
+        System.out.println("It's passed the integers!");
         double[][] elements = new double[row][col];
 
         for(int j=0; j<row; j++){
             for(int k=0; k<col; k++){
+                while(!scan.hasNextDouble());
                 elements[j][k] = scan.nextDouble();
             }
         }
