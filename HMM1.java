@@ -10,32 +10,21 @@ public class HMM1{
          *  Matrix where row = current state, col = next state (timestep), elements = joint probability of state entering next state (row -> col)
          */
         Matrix transition_matrix = create_matrix();
-        // System.out.println("transition done");
-        // System.out.println(transition_matrix);
 
-        
         /*
          *  Matrix where row = current state, col = observation, elements = joint probability of state and observation
          */
         Matrix emission_matrix = create_matrix();
-        // System.out.println(emission_matrix);
-        // System.out.println("emission done");
-
 
         /*
          *  Matrix where row size = 1, col = states, elements = probability of entering initial state (col)
          */
         Matrix initial_state_matrix = create_matrix();
-        // System.out.println(initial_state_matrix);
-        // System.out.println("initial done");
 
         /*
          *  Array of observations where array[0] is the first observation, array[n-1] is the n-th observation
          */
-        int[] observation_sequence = create_observation_sequence(); 
-        // System.out.println(observation_sequence);
-        // System.out.println("observation done");
-
+        int[] observation_sequence = create_observation_sequence();
 
         /*
          *  Matrix where row = alpha at time(row), col = states, elements = probability of entering state (col) given sequence of previous observations
@@ -43,11 +32,6 @@ public class HMM1{
         ArrayList<Matrix> alpha_matrix = new ArrayList<Matrix>();
 
         alpha_pass(alpha_matrix, observation_sequence, emission_matrix, transition_matrix, initial_state_matrix, observation_sequence.length);
-        // System.out.println("Starting multiplication...");
-        // Matrix next_state = initial_state_matrix.multiply(transition_matrix);
-        // Matrix results = next_state.multiply(emission_matrix);
-        // System.out.println("Multiplication done.. Printing results now");
-        // System.out.println(results);
 
         Matrix final_alpha = alpha_matrix.get(alpha_matrix.size()-1);
         double total = 0;
@@ -65,8 +49,6 @@ public class HMM1{
 
         row = sc.nextInt();
         col = sc.nextInt();
-
-        // System.out.println("It's passed the integers!");
         double[][] elements = new double[row][col];
 
         for(int j=0; j<row; j++){
@@ -74,7 +56,6 @@ public class HMM1{
                 elements[j][k] = sc.nextDouble();
             }
         }
-        // sc.next();
         Matrix new_matrix = new Matrix(row,col,elements);
         return new_matrix;
     }
@@ -83,13 +64,10 @@ public class HMM1{
         int[] observation_sequence;
         int length = sc.nextInt();
 
-        // System.out.println(length);
-
         observation_sequence = new int[length];
         for(int i=0; i<length; i++){
             int result = sc.nextInt();
             observation_sequence[i] = result;
-            // System.out.println(result);
         }
 
         return observation_sequence;
@@ -106,14 +84,15 @@ public class HMM1{
         while(alpha_matrix.size() != timestep){
 
             //calculate alpha(1)
-            // alpha(1) = B*pi (written below) *P(x|0)
+            // alpha(1) = pi (written below) *P(x|0)
+            
             if(alpha_matrix.size() == 0) next_state = initial_state_matrix;//.multiply(transition_matrix);
-            //UNSURE!!!  //TODO calculate's alpha(2...T)
+            // alpha(t) = alpha(t-1)*B (written below) *P(x|0)
             else next_state = current_state.multiply(transition_matrix);
 
+            // multiplication of P(x|0)
             next_state = alpha_multiply_observation(next_state, emission_matrix, observation_sequence[alpha_matrix.size()]);
             alpha_matrix.add(next_state);
-            // System.out.println(next_state);
 
             // alpha is passed down and saved
             current_state = next_state;
@@ -126,12 +105,14 @@ public class HMM1{
 
     public static Matrix alpha_multiply_observation(Matrix state_probability, Matrix emission_matrix, int observation){
 
-        double[][] alpha = new double[1][emission_matrix.get_col()];
+        double[][] alpha = new double[1][emission_matrix.get_row()];
         for(int i=0; i<emission_matrix.get_row(); i++){
             for(int j=0; j<emission_matrix.get_col(); j++){
-                if(observation == j) alpha[0][i] = Math.exp(Math.log(state_probability.get_elements()[0][i]) + Math.log(emission_matrix.get_elements()[i][j]));
+                if(observation == j){
+                    alpha[0][i] = Math.exp(Math.log(state_probability.get_elements()[0][i]) + Math.log(emission_matrix.get_elements()[i][j]));
+                } 
             }
         }
-        return new Matrix(alpha.length,alpha[0].length,alpha);
+        return  new Matrix(alpha.length,alpha[0].length,alpha);
     }
 }
