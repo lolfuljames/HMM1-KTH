@@ -45,12 +45,12 @@ public class HMM2{
 
         delta_pass(delta_matrix, prev_state_index, observation_sequence, emission_matrix, transition_matrix, initial_state_matrix, observation_sequence.length);
 
-        for(int i = 0; i<delta_matrix.size(); i++){
-            System.out.printf("At timestep t = %d\n", i);
-            System.out.println(delta_matrix.get(i));
-            if(i==0) continue;
-            System.out.println(prev_state_index.get(i-1));
-        }
+        // for(int i = 0; i<delta_matrix.size(); i++){
+        //     System.out.printf("At timestep t = %d\n", i);
+        //     System.out.println(delta_matrix.get(i));
+        //     if(i==0) continue;
+        //     System.out.println(prev_state_index.get(i-1));
+        // }
 
         // System.out.println("^^^^^^^^^^^^^^^^OUTSIDE");
 
@@ -70,7 +70,7 @@ public class HMM2{
         }
         
         //backtrack to get the rest of the sequence
-        for(int i=prev_state_index.size()-1; i>0; i--){
+        for(int i=prev_state_index.size()-1; i>=0; i--){
             // System.out.println(i);
             optimal_state_sequence[i] = (int)prev_state_index.get(i).get_elements()[0][optimal_state_sequence[i+1]];
         }
