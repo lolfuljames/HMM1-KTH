@@ -32,20 +32,53 @@ public class HMM2{
         ArrayList<Matrix> delta_matrix = new ArrayList<Matrix>();
 
         /*
-         *  Matrix where row = alpha at time(row), col = states, element is storing the most possible previous state
+         *  Matrix where row = alpha at time(row), col = states, element is storing the most possible previous state.
+         * 
+         *  Eg. At row = 1, element stores most possible state of timestep = 1 given the state (col) in timestep 2.
          */
         ArrayList<Matrix> prev_state_index = new ArrayList<Matrix>();
 
+        /*
+         * Array of integers that represent the optimal/most possible state sequence, array[0] being the initial state sequence
+         */
+        int[] optimal_state_sequence = new int[observation_sequence.length];
+
         delta_pass(delta_matrix, prev_state_index, observation_sequence, emission_matrix, transition_matrix, initial_state_matrix, observation_sequence.length);
 
-        Matrix final_alpha = delta_matrix.get(delta_matrix.size()-1);
-        double total = 0;
-
-        for(int i=0; i<final_alpha.get_elements()[0].length; i++){
-            total += final_alpha.get_elements()[0][i];
+        for(int i = 0; i<delta_matrix.size(); i++){
+            System.out.printf("At timestep t = %d\n", i);
+            System.out.println(delta_matrix.get(i));
+            if(i==0) continue;
+            System.out.println(prev_state_index.get(i-1));
         }
 
-        System.out.println(total);
+        // System.out.println("^^^^^^^^^^^^^^^^OUTSIDE");
+
+        double[] final_delta = delta_matrix.get(delta_matrix.size()-1).get_elements()[0];
+        double highest_prob = 0;
+
+
+        //get the final state that has the highest probability
+        for(int state=0; state<transition_matrix.get_row(); state++){
+            if(final_delta[state]>highest_prob) {
+                highest_prob = final_delta[state];
+                optimal_state_sequence[observation_sequence.length-1] = state;
+                // System.out.println(optimal_state_sequence[observation_sequence.length-1]);
+                // System.out.println(observation_sequence.length-1);
+                // System.out.println("hello");
+            } 
+        }
+        
+        //backtrack to get the rest of the sequence
+        for(int i=prev_state_index.size()-1; i>0; i--){
+            // System.out.println(i);
+            optimal_state_sequence[i] = (int)prev_state_index.get(i).get_elements()[0][optimal_state_sequence[i+1]];
+        }
+
+        for(int i=0; i<optimal_state_sequence.length; i++){
+            System.out.print(optimal_state_sequence[i]);
+            System.out.print(" ");
+        }
     }
 
     public static Matrix create_matrix(){
@@ -102,8 +135,15 @@ public class HMM2{
             // alpha is passed down and saved
             current_state = next_state;
 
-            if(delta_matrix.size() == 3) System.out.println(prev_state_index.get(1));
         }
+
+        // for(int i = 0; i<delta_matrix.size(); i++){
+        //     System.out.println(delta_matrix.get(i));
+        //     if(i==0) continue;
+        //     System.out.println(prev_state_index.get(i-1));
+        // }
+
+        // System.out.println("^^^^^^^^^^^^^^^^INSIDE");
     }
 
     /*

@@ -113,6 +113,8 @@ public class Matrix{
                     //Log(x*y) = Log(x) + Log(y)
                     double result = Math.log(A_elements[i][k])+Math.log(B_elements[k][j]); 
                     result = Math.exp(result);
+
+
                     //first time adding entry to state array
                     if(k==0){
                         result_elements[i][j] = result;
